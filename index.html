@@ -2,64 +2,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eko Horizons | Nigerian Life Simulator</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Eko Horizons</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101820;color:white;font-family:Arial,sans-serif;overflow:hidden;touch-action:none}
+canvas{display:block;width:100vw;height:100dvh}
+#hud{position:fixed;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}
+.panel{background:#101820e8;border:1px solid #f5c45e66;border-radius:13px;padding:10px 13px;box-shadow:0 5px 20px #0004}
+.brand{font-weight:bold;color:#f5c45e;letter-spacing:1px;font-size:14px}
+.small{font-size:11px;color:#d3dce0;margin-top:5px;line-height:1.5}
+#stats{text-align:right;font-size:12px;line-height:1.8}
+#message{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%);width:max-content;max-width:85%;background:#101820f5;border:1px solid #f5c45e;border-radius:14px;padding:18px;text-align:center;display:none;z-index:5}
+#message h2{margin:0 0 8px;color:#f5c45e}
+#message p{font-size:13px;line-height:1.5}
+button{border:0;border-radius:10px;background:#f5c45e;color:#152026;padding:11px 15px;font-weight:bold;cursor:pointer}
+#message button{margin:4px}
+#controls{position:fixed;left:0;right:0;bottom:15px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 16px;pointer-events:none}
+#stickArea,#actions{pointer-events:auto}
+#stickArea{text-align:center;font-size:9px;letter-spacing:1px;color:#fff}
+#joystick{width:115px;height:115px;border-radius:50%;background:#101820a6;border:2px solid #ffffff55;position:relative;touch-action:none}
+#knob{width:43px;height:43px;background:#f5c45e;border-radius:50%;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 3px 10px #0008}
+#actions{display:grid;grid-template-columns:58px 58px;gap:8px}
+.ctrl{width:58px;height:58px;border:1px solid #f5c45e88;background:#101820e8;color:#f5c45e;border-radius:17px;font-size:20px}
+.ctrl span{display:block;font-size:8px;color:white;margin-top:3px}
+#interact{grid-column:span 2;width:124px;background:#f5c45e;color:#101820}
+#interact span{color:#101820}
+#mapBtn{position:fixed;right:12px;top:115px;pointer-events:auto}
+@media(min-width:800px){#controls{opacity:.75}#joystick{width:95px;height:95px}}
+</style>
 </head>
 <body>
-  <canvas id="game"></canvas>
+<canvas id="game"></canvas>
 
-  <div id="menu" class="overlay">
-    <div class="menu-content">
-      <p class="eyebrow">A NIGERIAN CITY-LIFE SIMULATOR</p>
-      <h1>EKO <span>HORIZONS</span></h1>
-      <p>Explore the city. Discover your story.</p>
-      <button id="start">ENTER THE CITY →</button>
-      <small>WASD TO MOVE · SHIFT TO RUN · E TO INTERACT</small>
-    </div>
+<div id="hud">
+  <div class="panel">
+    <div class="brand">EKO HORIZONS</div>
+    <div class="small" id="mission">MISSION: Buy food from Mama Nkechi</div>
   </div>
-
-  <div id="hud" class="hidden">
-    <header>
-      <div class="brand">EH <span>EKO HORIZONS</span></div>
-      <div class="wallet">WALLET <strong id="cash">₦25,000</strong></div>
-    </header>
-
-    <div class="mission">
-      <small>YOUR FIRST DAY</small>
-      <strong id="mission">Explore the neighbourhood</strong>
-      <p id="hint">Find the green market stall.</p>
-    </div>
-
-    <div class="map">
-      <span>NEIGHBOURHOOD</span>
-      <canvas id="minimap" width="150" height="110"></canvas>
-      <small>● YOU ARE HERE</small>
-    </div>
-
-    <div id="message" class="message hidden"></div>
-
-    <footer>
-      <span>WASD MOVE</span>
-      <span>SHIFT RUN</span>
-      <span>SPACE JUMP</span>
-      <span>E INTERACT</span>
-      <span>M MAP</span>
-    </footer>
-
-    <div id="mapScreen" class="overlay hidden">
-      <div class="map-card">
-        <h2>CITY MAP</h2>
-        <p>● Your position</p>
-        <p>Market Road</p>
-        <p>New Dawn Estate</p>
-        <p>Coastal Avenue</p>
-        <button id="closeMap">CLOSE MAP</button>
-      </div>
-    </div>
+  <div class="panel" id="stats">
+    <div>💰 <b id="money">₦2,500</b></div>
+    <div>⚡ Energy: <b id="energy">100%</b></div>
+    <div>📍 <b id="district">Yaba</b></div>
   </div>
+</div>
 
-  <script src="game.js"></script>
+<button id="mapBtn">🗺 CITY</button>
+
+<div id="message">
+  <h2 id="title">Welcome to Eko!</h2>
+  <p id="description"></p>
+  <div id="options"></div>
+  <button onclick="closeMessage()">CLOSE</button>
+</div>
+
+<div id="controls">
+  <div id="stickArea">
+    <div id="joystick"><div id="knob"></div></div>
+    MOVE
+  </div>
+  <div id="actions">
+    <button class="ctrl" id="run">⚡<span>RUN</span></button>
+    <button class="ctrl" id="jump">↗<span>JUMP</span></button>
+    <button class="ctrl" id="interact">✦<span>INTERACT</span></button>
+  </div>
+</div>
+
+<script>
+const canvas=document.getElementById('game');
+const ctx=canvas.getContext('2d');
+let W=innerWidth,H=innerHeight,dpr=1;
+function resize(){
+  W=innerWidth;H=innerHeight;dpr=Math.min(devicePixelRatio||1,2);
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener('resize',resize);resize();
+
+const world={w:1800,h:1400};
+const player={x:300,y:350,r:12,speed:170,money:2500,energy:100,jump:0};
+const keys={};
+let joyX=0,joyY=0,running=false,near=null,missionDone=false;
+let last=0,clock=0;
+
+const places=[
+ {name:"Mama Nkechi's Food Stall",x:130,y:120,w:160,h:110,type:"food",emoji:"🍲",color:"#cf8654"},
+ {name:"Corner Shop",x:430,y:100,w:150,h:120,type:"shop",emoji:"🛒",color:"#e0b56e"},
+ {name:"Balogun Market",x:800,y:120,w:190,h:130,type:"market",emoji:"🛍️",color:"#c66c50"},
+ {name:"Community Court",x:1250,y:100,w:200,h:140,type:"court",emoji:"🏀",color:"#789d6a"},
+ {name:"Danfo Bus Stop",x:1500,y:470,w:170,h:120,type:"bus",emoji:"🚏",color:"#dfb86d"},
+ {name:"Small Chops",x:250,y:760,w:170,h:115,type:"food",emoji:"🍢",color:"#c87a50"},
+ {name:"Phone Shop",x:800,y:760,w:180,h:120,type:"shop",emoji:"📱",color:"#8ba7b0"},
+ {name:"Arts Centre",x:1250,y:820,w:200,h:130,type:"culture",emoji:"🎭",color:"#ba8eaa"}
+];
+const people=[
+ {name:"Tunde",x:380,y:340,emoji:"🧑🏾",type:"person"},
+ {name:"Amaka",x:640,y:480,emoji:"👩🏾",type:"person"},
+ {name:"Bisi the Trader",x:1020,y:500,emoji:"👩🏿",type:"job"},
+ {name:"Kola",x:1330,y:320,emoji:"🧑🏿",type:"person"}
+];
+const roads=[
+ {x:0,y:280,w:1800,h:95},{x:0,y:600,w:1800,h:95},
+ {x:350,y:0,w:90,h:1400},{x:700,y:0,w:90,h:1400},
+ {x:1150,y:0,w:90,h:1400},{x:1480,y:0,w:90,h:1400}
+];
+const cars=Array.from({length:8},(_,i)=>({
+ x:i*250,y:[305,335,625,650][i%4],
+ speed:i%2?90:-75,color:['#f2bf4f','#d65c49','#438e88','#d8d8cf'][i%4]
+}));
+const trees=Array.from({length:80},(_,i)=>({
+ x:(i*173+40)%world.w,y:(i*227+50)%world.h
+}));
+
+function money(n){
+ player.money=Math.max(0,player.money+n);
+ document.getElementById('money').textContent='₦'+player.money.toLocaleString('en-NG');
+}
+function showMessage(title,desc,actions=[]){
+ document.getElementById('title').textContent=title;
+ document.getElementById('description').textContent=desc;
+ const box=document.getElementById('options');box.innerHTML='';
+ actions.forEach(a=>{
+  const b=document.createElement('button');b.textContent=a.label;
+  b.onclick=()=>{a.fn();closeMessage()};box.appendChild(b);
+ });
+ document.getElementById('message').style.display='block';
+}
+function closeMessage(){document.getElementById('message').style.display='none'}
+function toast(text){showMessage('Eko Horizons',text)}
+function interact(){
+ if(document.getElementById('message').style.display==='block'){closeMessage();return}
+ if(!near){toast('Move closer to a person or building to interact.');return}
+ if(near.type==='food'){
+  showMessage(near.name,'Fresh Nigerian street food! What would you like?',[
+   {label:'Buy snack ₦300',fn:()=>{
+    if(player.money<300){toast('Not enough money. Try a side hustle.');return}
+    money(-300);player.energy=Math.min(100,player.energy+20);
+    if(!missionDone){missionDone=true;money(800);document.getElementById('mission').textContent='MISSION COMPLETE ✓ +₦800';toast('Mission complete! You earned ₦800!')}
+    else toast('Yummy! Energy restored.');
+   }},
+   {label:'Buy jollof ₦900',fn:()=>{
+    if(player.money<900){toast('Not enough money for jollof.');return}
+    money(-900);player.energy=Math.min(100,player.energy+45);toast('Jollof rice acquired! Energy +45.');
+   }}
+  ]);return;
+ }
+ if(near.type==='market'||near.type==='job'){
+  showMessage(near.name,'A trader needs help with a quick delivery.',[
+   {label:'Help out +₦650',fn:()=>{money(650);player.energy=Math.max(0,player.energy-10);toast('Side hustle complete! +₦650')}},
+   {label:'Take a break',fn:()=>{player.energy=Math.min(100,player.energy+10);toast('You feel refreshed!')}}
+  ]);return;
+ }
+ if(near.type==='court'){
+  showMessage(near.name,'Ready for a game?',[
+   {label:'Play basketball',fn:()=>{player.energy=Math.min(100,player.energy+15);toast('Nice game! Energy +15')}},
+   {label:'Friendly challenge ₦200',fn:()=>{
+    if(player.money<200){toast('You need ₦200 to play.');return}
+    money(-200);if(Math.random()>.4){money(400);toast('You won! Net reward ₦200.')}else toast('Good game. Try again another time.')
+   }}
+  ]);return;
+ }
+ if(near.type==='bus'){
+  showMessage('Danfo Bus Stop','Travel to another neighbourhood for ₦150.',[
+   {label:'Ride ₦150',fn:()=>{
+    if(player.money<150){toast('You need ₦150 for the ride.');return}
+    money(-150);player.x=player.x<900?1550:250;player.y=1050;toast('Welcome to a new neighbourhood!')
+   }}
+  ]);return;
+ }
+ showMessage(near.name||near.label,'You explored this place in Lagos. Keep discovering the city!',[
+  {label:'Rest (+10 energy)',fn:()=>{player.energy=Math.min(100,player.energy+10);toast('Energy +10!')}}
+ ]);
+}
+function distance(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+function collides(x,y){
+ return places.some(p=>x+player.r>p.x&&x-player.r<p.x+p.w&&y+player.r>p.y&&y-player.r<p.y+p.h)
+}
+function update(dt){
+ let dx=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0)+joyX;
+ let dy=(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0)+joyY;
+ let len=Math.hypot(dx,dy);if(len>1){dx/=len;dy/=len}
+ if(document.getElementById('message').style.display!=='block'){
+  const sprint=running&&player.energy>0;
+  const speed=player.speed*(sprint?1.6:1);
+  if(sprint&&len>0)player.energy=Math.max(0,player.energy-24*dt);
+  else player.energy=Math.min(100,player.energy+8*dt);
+  const nx=Math.max(15,Math.min(world.w-15,player.x+dx*speed*dt));
+  const ny=Math.max(15,Math.min(world.h-15,player.y+dy*speed*dt));
+  if(!collides(nx,player.y))player.x=nx;
+  if(!collides(player.x,ny))player.y=ny;
+  if(player.jump>0)player.jump=Math.max(0,player.jump-190*dt);
+  near=null;let best=85;
+  [...places,...people].forEach(o=>{
+   const ox=o.x+(o.w||0)/2,oy=o.y+(o.h||0)/2,d=distance(player,{x:ox,y:oy});
+   if(d<best){best=d;near=o}
+  });
+ }
+ cars.forEach(c=>{c.x+=c.speed*dt;if(c.x>world.w)c.x=-50;if(c.x<-50)c.x=world.w});
+ clock+=dt;
+ document.getElementById('energy').textContent=Math.round(player.energy)+'%';
+ document.getElementById('district').textContent=player.y<450?'Yaba':player.y<850?'Mainland':'Community';
+}
+function draw(){
+ ctx.clearRect(0,0,W,H);
+ const camX=Math.max(0,Math.min(world.w-W,player.x-W/2));
+ const camY=Math.max(0,Math.min(world.h-H,player.y-H/2));
+ ctx.save();ctx.translate(-camX,-camY);
+ ctx.fillStyle='#527b58';ctx.fillRect(0,0,world.w,world.h);
+ trees.forEach(t=>{
+  ctx.fillStyle='#2d6341';ctx.beginPath();ctx.arc(t.x,t.y,12,0,7);ctx.fill();
+  ctx.fillStyle='#47834d';ctx.beginPath();ctx.arc(t.x-3,t.y-4,8,0,7);ctx.fill();
+ });
+ roads.forEach(r=>{
+  ctx.fillStyle='#c1bdb0';ctx.fillRect(r.x,r.y,r.w,r.h);
+  ctx.fillStyle='#555b59';ctx.fillRect(r.x,r.y+6,r.w,r.h-12);
+  ctx.strokeStyle='#f3d987';ctx.lineWidth=2;ctx.setLineDash([18,18]);
+  ctx.beginPath();if(r.w>r.h){ctx.moveTo(r.x,r.y+r.h/2);ctx.lineTo(r.x+r.w,r.y+r.h/2)}
+  else{ctx.moveTo(r.x+r.w/2,r.y);ctx.lineTo(r.x+r.w/2,r.y+r.h)}
+  ctx.stroke();ctx.setLineDash([]);
+ });
+ places.forEach(p=>{
+  ctx.fillStyle='#26382c';ctx.fillRect(p.x-4,p.y+6,p.w+8,p.h+8);
+  ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.w,p.h);
+  ctx.fillStyle='#f3dfb1';ctx.fillRect(p.x+7,p.y+8,p.w-14,10);
+  ctx.fillStyle='#526e73';
+  for(let x=p.x+15;x<p.x+p.w-15;x+=38)ctx.fillRect(x,p.y+29,20,24);
+  ctx.fillStyle='#62462e';ctx.fillRect(p.x+p.w/2-12,p.y+p.h-34,24,34);
+  ctx.textAlign='center';ctx.font='bold 10px Arial';ctx.fillStyle='#17221d';
+  ctx.fillText(p.name,p.x+p.w/2,p.y+p.h-9);
+  ctx.font='20px Arial';ctx.fillText(p.emoji,p.x+p.w/2,p.y-9);
+ });
+ cars.forEach(c=>{
+  ctx.fillStyle=c.color;ctx.fillRect(c.x,c.y,42,19);
+  ctx.fillStyle='#b8d4d2';ctx.fillRect(c.x+8,c.y+3,23,8);
+  ctx.fillStyle='#202625';ctx.fillRect(c.x+5,c.y+16,8,5);ctx.fillRect(c.x+29,c.y+16,8,5);
+ });
+ people.forEach(p=>{
+  ctx.fillStyle='#242c2a';ctx.fillRect(p.x-7,p.y-1,14,18);
+  ctx.fillStyle=p.type==='job'?'#c6533d':'#258c7d';ctx.fillRect(p.x-10,p.y-12,20,16);
+  ctx.fillStyle='#8a573b';ctx.beginPath();ctx.arc(p.x,p.y-19,8,0,7);ctx.fill();
+  ctx.font='19px Arial';ctx.textAlign='center';ctx.fillStyle='white';ctx.fillText(p.emoji,p.x,p.y-31);
+  ctx.font='10px Arial';ctx.fillText(p.name,p.x,p.y+29);
+ });
+ // Player shadow and character
+ ctx.fillStyle='#17231f77';ctx.beginPath();ctx.ellipse(player.x,player.y+10,14,6,0,0,7);ctx.fill();
+ ctx.fillStyle='#202a31';ctx.fillRect(player.x-8,player.y-1-player.jump,6,14);ctx.fillRect(player.x+2,player.y-1-player.jump,6,14);
+ ctx.fillStyle='#f5c45e';ctx.fillRect(player.x-10,player.y-15-player.jump,20,18);
+ ctx.fillStyle='#8b573c';ctx.beginPath();ctx.arc(player.x,player.y-21-player.jump,8,0,7);ctx.fill();
+ ctx.fillStyle='#26221f';ctx.beginPath();ctx.arc(player.x,player.y-24-player.jump,8,Math.PI,7);ctx.fill();
+ if(near){ctx.strokeStyle='#f5c45e';ctx.lineWidth=2;ctx.beginPath();ctx.arc(player.x,player.y-5,22+Math.sin(clock*6)*2,0,7);ctx.stroke()}
+ ctx.restore();
+}
+function loop(t){const dt=Math.min((t-last)/1000||0,.04);last=t;update(dt);draw();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+
+addEventListener('keydown',e=>{
+ keys[e.key]=true;keys[e.key.toLowerCase()]=true;
+ if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+ if(e.key.toLowerCase()==='e')interact();
+ if(e.key.toLowerCase()==='m')showMessage('City Guide','Find food, earn money at the market, play basketball, or catch a danfo.');
+ if(e.key===' '&&player.jump===0)player.jump=65;
+});
+addEventListener('keyup',e=>{keys[e.key]=false;keys[e.key.toLowerCase()]=false});
+document.getElementById('interact').addEventListener('pointerdown',e=>{e.preventDefault();interact()});
+document.getElementById('jump').addEventListener('pointerdown',e=>{e.preventDefault();if(player.jump===0)player.jump=65});
+const runBtn=document.getElementById('run');
+runBtn.addEventListener('pointerdown',e=>{e.preventDefault();running=true;runBtn.style.background='#f5c45e'});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>runBtn.addEventListener(ev,()=>{running=false;runBtn.style.background=''}));
+document.getElementById('mapBtn').onclick=()=>showMessage('City Guide','Explore the neighbourhoods. Find Mama Nkechi for food, visit the market for side hustles, play at the court, or catch a danfo.');
+const joy=document.getElementById('joystick'),knob=document.getElementById('knob');let joyPointer=null;
+function setJoy(e){
+ const r=joy.getBoundingClientRect(),max=r.width*.32;
+ let x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2),d=Math.hypot(x,y);
+ if(d>max){x=x/d*max;y=y/d*max}
+ joyX=x/max;joyY=y/max;
+ knob.style.left=`${50+joyX*32}%`;knob.style.top=`${50+joyY*32}%`;
+}
+function resetJoy(){joyPointer=null;joyX=joyY=0;knob.style.left='50%';knob.style.top='50%'}
+joy.addEventListener('pointerdown',e=>{e.preventDefault();joyPointer=e.pointerId;joy.setPointerCapture(e.pointerId);setJoy(e)});
+joy.addEventListener('pointermove',e=>{if(e.pointerId===joyPointer)setJoy(e)});
+joy.addEventListener('pointerup',resetJoy);joy.addEventListener('pointercancel',resetJoy);
+</script>
 </body>
 </html>
