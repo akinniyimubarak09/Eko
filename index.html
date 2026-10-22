@@ -1,12 +1,65 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Eko Horizons — Playable Prototype</title><link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eko Horizons | Nigerian Life Simulator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="game"></div>
-<div id="loading" class="screen loading"><div><div class="eyebrow">INDEPENDENT GAME PROTOTYPE</div><h1>EKO <span>HORIZONS</span></h1><p>Preparing the city…</p></div></div>
-<div id="menu" class="screen"><div class="menu-panel"><div class="eyebrow">A NIGERIAN CITY LIFE SIMULATOR</div><h1>EKO <span>HORIZONS</span></h1><p class="lead">Your city. Your choices. Your story.</p><p class="description">Explore a fictional Lagos-inspired neighbourhood. Walk the streets, discover local businesses, and find your place in the city.</p><button id="startBtn">ENTER THE CITY <span>→</span></button><div class="menu-foot">MILESTONE 1 · PLAYABLE 3D PROTOTYPE</div></div></div>
-<div id="hud" class="hidden"><div class="brand"><span class="brand-mark">EH</span><div><b>EKO HORIZONS</b><small>MAINLAND DISTRICT</small></div></div><div class="money"><small>WALLET</small><b>₦ <span id="cash">25,000</span></b></div><div class="mission"><small>YOUR FIRST DAY</small><b id="objective">Explore the neighbourhood</b><span id="objectiveHint">Walk to the market marker</span></div><div class="crosshair"></div><div id="prompt" class="prompt hidden">Press <kbd>E</kbd> to interact</div><div class="bottom-left"><div class="status"><span class="dot"></span> CITY LIFE <b>●</b></div><div class="controls">WASD MOVE <i>·</i> SHIFT RUN <i>·</i> SPACE JUMP <i>·</i> E INTERACT <i>·</i> M MAP</div></div><div id="mapPanel" class="map-panel hidden"><b>NEIGHBOURHOOD MAP</b><p>● You are here</p><span>Market Road</span><span>Coastal Avenue</span><span>New Dawn Estate</span><button id="closeMap">CLOSE [M]</button></div><div id="toast" class="toast hidden"></div></div>
-<script type="module" src="game.js"></script>
-</body></html>
+  <canvas id="game"></canvas>
+
+  <div id="menu" class="overlay">
+    <div class="menu-content">
+      <p class="eyebrow">A NIGERIAN CITY-LIFE SIMULATOR</p>
+      <h1>EKO <span>HORIZONS</span></h1>
+      <p>Explore the city. Discover your story.</p>
+      <button id="start">ENTER THE CITY →</button>
+      <small>WASD TO MOVE · SHIFT TO RUN · E TO INTERACT</small>
+    </div>
+  </div>
+
+  <div id="hud" class="hidden">
+    <header>
+      <div class="brand">EH <span>EKO HORIZONS</span></div>
+      <div class="wallet">WALLET <strong id="cash">₦25,000</strong></div>
+    </header>
+
+    <div class="mission">
+      <small>YOUR FIRST DAY</small>
+      <strong id="mission">Explore the neighbourhood</strong>
+      <p id="hint">Find the green market stall.</p>
+    </div>
+
+    <div class="map">
+      <span>NEIGHBOURHOOD</span>
+      <canvas id="minimap" width="150" height="110"></canvas>
+      <small>● YOU ARE HERE</small>
+    </div>
+
+    <div id="message" class="message hidden"></div>
+
+    <footer>
+      <span>WASD MOVE</span>
+      <span>SHIFT RUN</span>
+      <span>SPACE JUMP</span>
+      <span>E INTERACT</span>
+      <span>M MAP</span>
+    </footer>
+
+    <div id="mapScreen" class="overlay hidden">
+      <div class="map-card">
+        <h2>CITY MAP</h2>
+        <p>● Your position</p>
+        <p>Market Road</p>
+        <p>New Dawn Estate</p>
+        <p>Coastal Avenue</p>
+        <button id="closeMap">CLOSE MAP</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
