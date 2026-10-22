@@ -3,73 +3,63 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Eko Horizons — Lagos Life Simulator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Eko Horizons — Lagos Rush</title>
 <style>
-:root {
-  --gold:#ffc857; --bg:#101820; --panel:#17232d;
-  --muted:#aebbc5; --green:#49d49d; --red:#ff7777;
-}
+:root{--gold:#ffd34f;--orange:#ff8a32;--dark:#111923}
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:white;font-family:Arial,Helvetica,sans-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#80d7ed;font-family:Arial,Helvetica,sans-serif;touch-action:none}
 canvas{display:block;width:100%;height:100%;touch-action:none}
-button{font:inherit;cursor:pointer;border:0}
-#hud{position:fixed;inset:0;pointer-events:none}
-.panel{background:rgba(16,24,32,.94);border:1px solid #344550;border-radius:14px;padding:12px;box-shadow:0 8px 24px #0005}
-#topbar{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.brand{font-weight:900;letter-spacing:1px;color:var(--gold);font-size:17px}
-.small{font-size:11px;color:var(--muted);margin-top:4px}
-#stats{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-.stat{background:#1b2a35;border:1px solid #344550;border-radius:10px;padding:8px 10px;font-size:12px;white-space:nowrap}
-.stat b{color:var(--gold)}
-#mission{position:absolute;top:83px;left:10px;width:min(310px,calc(100vw - 20px))}
-#mission h3{margin:0 0 7px;font-size:14px;color:var(--gold)}
-#missionTitle{font-size:13px;font-weight:bold}
-#missionDesc{font-size:11px;color:var(--muted);line-height:1.5;margin:6px 0}
-.bar{height:7px;background:#33434e;border-radius:10px;overflow:hidden;margin-top:7px}
-#xpFill,#missionFill{height:100%;width:0;background:linear-gradient(90deg,#f3a833,#ffe29a);transition:width .3s}
-#missionFill{background:var(--green)}
-#missionProgress{font-size:10px;color:var(--muted);margin-top:5px}
-#missionReward{font-size:10px;color:var(--gold);margin-top:5px}
-#help{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:#101820d9;border:1px solid #41515d;border-radius:12px;padding:8px 12px;font-size:11px;color:#e7edf1;text-align:center;max-width:90vw}
-#toast{position:absolute;top:43%;left:50%;transform:translate(-50%,-50%);background:#111c25;border:1px solid var(--gold);border-radius:13px;padding:15px 18px;max-width:85vw;width:330px;text-align:center;display:none;pointer-events:auto;box-shadow:0 12px 45px #0008}
-#toast h3{margin:0 0 7px;color:var(--gold)}
-#toast p{font-size:13px;line-height:1.5;color:#d9e1e7;margin:0 0 12px}
-.goldBtn{background:var(--gold);color:#17202a;border-radius:9px;padding:10px 15px;font-weight:bold}
-#actions{position:absolute;right:12px;bottom:76px;display:flex;flex-direction:column;gap:8px;pointer-events:auto}
-.actionBtn{background:#17232ddd;border:1px solid #62727d;color:white;border-radius:50%;width:58px;height:58px;font-size:10px;font-weight:bold;box-shadow:0 4px 12px #0005}
-.actionBtn.primary{background:var(--gold);color:#15212b;border-color:#ffe09a}
-#mobileControls{position:absolute;left:12px;bottom:72px;display:grid;grid-template-columns:46px 46px 46px;grid-template-rows:46px 46px 46px;gap:3px;pointer-events:auto}
-.move{border:1px solid #697b87;background:#17232dcc;color:white;border-radius:12px;font-size:19px;touch-action:none}
-.move:active,.actionBtn:active{background:var(--gold);color:#17232d}
-#up{grid-column:2;grid-row:1}#left{grid-column:1;grid-row:2}#down{grid-column:2;grid-row:2}#right{grid-column:3;grid-row:2}
-#sprint{grid-column:2;grid-row:3;font-size:10px}
-#missionList{display:none;position:absolute;top:90px;right:10px;width:min(300px,calc(100vw - 20px));max-height:60vh;overflow:auto;pointer-events:auto}
-.missionItem{padding:10px;border-radius:10px;background:#21313d;margin-top:8px;border:1px solid #344550}
-.missionItem strong{font-size:12px}
-.missionItem p{font-size:11px;color:var(--muted);margin:5px 0}
-.tag{font-size:10px;color:var(--gold)}
-#minimap{position:absolute;right:12px;top:84px;width:112px;height:90px;border:1px solid #63717b;border-radius:10px;background:#14212b;overflow:hidden}
-#mapCanvas{width:100%;height:100%}
-#bottomButtons{position:absolute;bottom:10px;right:10px;display:flex;gap:6px;pointer-events:auto}
-#bottomButtons button{background:#1b2a35;color:white;border:1px solid #40515d;border-radius:9px;padding:8px;font-size:10px}
-#bottomButtons button.active{color:var(--gold);border-color:var(--gold)}
+button{font-family:inherit;cursor:pointer;touch-action:none}
+#hud{position:fixed;inset:0;pointer-events:none;color:white}
+.top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.logo{font-weight:1000;font-size:clamp(15px,3vw,25px);letter-spacing:1px;text-shadow:0 3px 3px #0007}
+.logo span{color:var(--gold)}
+.sub{font-size:10px;letter-spacing:2px;margin-top:4px;color:#eafaff}
+.stats{display:flex;gap:7px}
+.stat{background:#101923d9;border:1px solid #ffffff35;border-radius:12px;padding:8px 12px;min-width:65px;text-align:center;box-shadow:0 4px 15px #0002}
+.stat small{display:block;font-size:9px;color:#c6d7e0;font-weight:bold;letter-spacing:1px}
+.stat strong{display:block;font-size:clamp(14px,3vw,21px);margin-top:3px}
+#score{color:var(--gold)}#coins{color:#ffe56a}
+#progress{position:absolute;top:85px;left:50%;transform:translateX(-50%);width:min(240px,45vw);height:5px;border-radius:8px;background:#10212d66;overflow:hidden}
+#progressFill{height:100%;width:0;background:var(--gold)}
+#pause{pointer-events:auto;position:absolute;top:90px;right:13px;width:42px;height:42px;border-radius:13px;background:#101923d9;color:white;border:1px solid #ffffff55;font-size:18px}
+#hint{position:absolute;top:100px;left:50%;transform:translateX(-50%);text-align:center;font-size:11px;text-shadow:0 2px 4px #000b;white-space:nowrap;color:white}
+#controls{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 18px;pointer-events:none}
+.pad{display:grid;grid-template-columns:56px 56px;grid-template-rows:56px 56px;gap:6px;pointer-events:auto}
+.ctrl{background:#101923b9;color:white;border:1px solid #ffffff60;border-radius:16px;font-size:21px;font-weight:bold;box-shadow:0 5px 12px #0003}
+.ctrl:active{background:var(--gold);color:#17202a}
+#left{grid-column:1;grid-row:2}#right{grid-column:2;grid-row:2}
+.actions{display:flex;gap:8px;pointer-events:auto}
+.actions .ctrl{width:66px;height:61px;font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.actions b{font-size:22px}
+#overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#10223166,#07111ddd);z-index:5;padding:18px}
+.card{width:min(430px,100%);border:1px solid #ffffff40;border-radius:25px;padding:25px 23px;background:linear-gradient(150deg,#203744f5,#101820f5);box-shadow:0 20px 80px #0008;text-align:center;color:white}
+.eyebrow{color:var(--gold);font-size:11px;font-weight:bold;letter-spacing:3px}
+h1{font-size:clamp(30px,8vw,48px);line-height:.98;margin:12px 0}
+h1 span{color:var(--gold)}
+.card p{color:#d1dfe5;font-size:14px;line-height:1.65}
+.mainbtn{width:100%;border:0;border-radius:13px;padding:15px;background:linear-gradient(100deg,#ffb52e,#ffdf69);color:#18202a;font-size:15px;font-weight:900;margin-top:12px;box-shadow:0 5px 0 #b7791f}
+.mainbtn:active{transform:translateY(2px);box-shadow:0 3px 0 #b7791f}
+.secondary{width:100%;border:1px solid #ffffff35;border-radius:12px;padding:12px;background:#ffffff0b;color:white;font-weight:bold;margin-top:10px}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:17px 0;text-align:left}
+.feature{background:#ffffff0b;border:1px solid #ffffff12;padding:10px;border-radius:11px;font-size:12px}
+.feature b{display:block;color:var(--gold);font-size:15px;margin-bottom:4px}
+#finalStats{display:flex;justify-content:center;gap:25px;margin:15px 0}
+#finalStats strong{display:block;font-size:24px;color:var(--gold)}
+#finalStats small{color:#b6c8d2;font-size:10px;letter-spacing:1px}
+.hidden{display:none!important}
 @media(min-width:850px){
- #mission{top:85px}
- #mobileControls{opacity:.6}
- #help{bottom:12px}
+ #controls{padding:0 35px;bottom:25px}
+ .pad{grid-template-columns:65px 65px;grid-template-rows:65px 65px}
+ .actions .ctrl{width:78px;height:70px}
 }
-@media(max-width:600px){
- .brand{font-size:14px}
- .small{font-size:9px}
- .stat{padding:7px;font-size:10px}
- #mission{top:78px;width:220px;padding:9px}
- #missionDesc{font-size:10px}
- #minimap{top:auto;bottom:220px;width:80px;height:65px}
- #help{font-size:9px;bottom:8px}
- #actions{right:8px;bottom:68px}
- .actionBtn{width:51px;height:51px}
- #mobileControls{left:8px;bottom:65px;grid-template-columns:42px 42px 42px;grid-template-rows:42px 42px 42px}
+@media(max-height:540px){
+ .top{top:7px}.stat{padding:5px 8px}
+ #progress{top:65px}#pause{top:69px}
+ #controls{bottom:8px}.pad{grid-template-columns:43px 43px;grid-template-rows:43px 43px}
+ .actions .ctrl{width:53px;height:49px}
+ .card{padding:15px}.features{margin:9px 0}
 }
 </style>
 </head>
@@ -77,637 +67,546 @@ button{font:inherit;cursor:pointer;border:0}
 <canvas id="game"></canvas>
 
 <div id="hud">
-  <div id="topbar">
-    <div class="panel">
-      <div class="brand">EKO HORIZONS</div>
-      <div class="small">Lagos Life Simulator · Demo</div>
+  <div class="top">
+    <div>
+      <div class="logo">EKO <span>HORIZONS</span></div>
+      <div class="sub">LAGOS RUSH · ENDLESS RUNNER</div>
     </div>
-    <div id="stats">
-      <div class="stat">LEVEL <b id="level">1</b></div>
-      <div class="stat">₦<b id="cash">5000</b></div>
-      <div class="stat">XP <b id="xp">0</b></div>
-      <div class="stat">⚡ <b id="energy">100</b>%</div>
+    <div class="stats">
+      <div class="stat"><small>SCORE</small><strong id="score">0</strong></div>
+      <div class="stat"><small>COINS</small><strong id="coins">0</strong></div>
     </div>
   </div>
-
-  <div id="mission" class="panel">
-    <h3>★ YOUR CURRENT MISSION</h3>
-    <div id="missionTitle">Welcome to Lagos</div>
-    <div id="missionDesc">Explore the city and begin your journey.</div>
-    <div class="bar"><div id="missionFill"></div></div>
-    <div id="missionProgress">0 / 1 completed</div>
-    <div id="missionReward">Reward: XP + cash</div>
-    <div class="bar"><div id="xpFill"></div></div>
-    <div id="xpLabel" class="small">Level progress</div>
+  <div id="progress"><div id="progressFill"></div></div>
+  <div id="hint">← → CHANGE LANES &nbsp; · &nbsp; ↑ JUMP &nbsp; · &nbsp; ↓ SLIDE</div>
+  <button id="pause" aria-label="Pause game">Ⅱ</button>
+  <div id="controls">
+    <div class="pad">
+      <button class="ctrl" id="left" aria-label="Move left">◀</button>
+      <button class="ctrl" id="right" aria-label="Move right">▶</button>
+    </div>
+    <div class="actions">
+      <button class="ctrl" id="jump"><b>⬆</b>JUMP</button>
+      <button class="ctrl" id="slide"><b>⬇</b>SLIDE</button>
+    </div>
   </div>
+</div>
 
-  <div id="minimap"><canvas id="mapCanvas" width="112" height="90"></canvas></div>
-
-  <div id="missionList" class="panel">
-    <h3 style="color:var(--gold);margin:0">MISSION JOURNAL</h3>
-    <div id="missionItems"></div>
+<div id="overlay">
+  <div class="card" id="startCard">
+    <div class="eyebrow">WELCOME TO LAGOS</div>
+    <h1>EKO<br><span>HORIZONS</span></h1>
+    <p>Dash through the streets of Lagos! Dodge trains, jump barriers, slide under signs and collect golden coins.</p>
+    <div class="features">
+      <div class="feature"><b>🪙 COLLECT</b>Gather gold coins</div>
+      <div class="feature"><b>🚆 DODGE</b>Watch for trains</div>
+      <div class="feature"><b>⚡ SURVIVE</b>Run as far as you can</div>
+      <div class="feature"><b>📱 PLAY ANYWHERE</b>PC and mobile controls</div>
+    </div>
+    <p style="font-size:12px">PC: A/D or ←/→ to move · Space to jump · S/↓ to slide</p>
+    <button class="mainbtn" id="startBtn">▶ START RUN</button>
   </div>
-
-  <div id="mobileControls">
-    <button class="move" id="up">▲</button>
-    <button class="move" id="left">◀</button>
-    <button class="move" id="down">▼</button>
-    <button class="move" id="right">▶</button>
-    <button class="move" id="sprint">RUN</button>
+  <div class="card hidden" id="pauseCard">
+    <div class="eyebrow">TAKE A BREATHER</div>
+    <h1>GAME <span>PAUSED</span></h1>
+    <p>Your run is paused. Ready to get back on the tracks?</p>
+    <button class="mainbtn" id="resumeBtn">▶ RESUME RUN</button>
+    <button class="secondary" id="restartPause">↻ RESTART RUN</button>
   </div>
-
-  <div id="actions">
-    <button class="actionBtn primary" id="interact">INTERACT</button>
-    <button class="actionBtn" id="jump">JUMP</button>
-    <button class="actionBtn" id="missionsBtn">MISSIONS</button>
-  </div>
-
-  <div id="bottomButtons">
-    <button id="soundBtn">SOUND: OFF</button>
-    <button id="saveBtn">SAVE</button>
-  </div>
-
-  <div id="help">WASD / ARROWS to move · E to interact · Shift to run · Explore Lagos!</div>
-
-  <div id="toast">
-    <h3 id="toastTitle">Eko Horizons</h3>
-    <p id="toastText"></p>
-    <button class="goldBtn" id="toastClose">CONTINUE</button>
+  <div class="card hidden" id="overCard">
+    <div class="eyebrow">RUN COMPLETE</div>
+    <h1>GOOD <span>RUN!</span></h1>
+    <p>You made it through the streets of Lagos. Can you beat your record?</p>
+    <div id="finalStats">
+      <div><strong id="finalScore">0</strong><small>SCORE</small></div>
+      <div><strong id="finalCoins">0</strong><small>COINS</small></div>
+      <div><strong id="finalDistance">0m</strong><small>DISTANCE</small></div>
+    </div>
+    <p id="bestLabel"></p>
+    <button class="mainbtn" id="restartBtn">↻ RUN AGAIN</button>
   </div>
 </div>
 
 <script>
 (() => {
 "use strict";
-
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-const mapCanvas = document.getElementById("mapCanvas");
-const mctx = mapCanvas.getContext("2d");
-
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+const $=id=>document.getElementById(id);
 let W=innerWidth,H=innerHeight,DPR=1;
 function resize(){
-  W=innerWidth; H=innerHeight; DPR=Math.min(devicePixelRatio||1,2);
-  canvas.width=Math.floor(W*DPR); canvas.height=Math.floor(H*DPR);
+  W=innerWidth;H=innerHeight;DPR=Math.min(devicePixelRatio||1,2);
+  canvas.width=Math.round(W*DPR);canvas.height=Math.round(H*DPR);
+  canvas.style.width=W+"px";canvas.style.height=H+"px";
   ctx.setTransform(DPR,0,0,DPR,0,0);
 }
-addEventListener("resize",resize); resize();
+addEventListener("resize",resize);resize();
 
-const WORLD={w:2600,h:2000};
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
 const rand=(a,b)=>a+Math.random()*(b-a);
-const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
-const keys={};
-let camera={x:0,y:0};
-let frame=0;
-let lastTime=0;
-let toastTimer=null;
-let soundOn=false;
-let audioCtx=null;
+const choose=a=>a[Math.floor(Math.random()*a.length)];
+let state="menu";
+let last=0,elapsed=0,spawnClock=0,worldTravel=0;
+let score=0,coins=0,best=0,speed=0.34;
+try{best=Number(localStorage.getItem("ekoRunnerBest")||0)}catch(e){}
 
 const player={
-  x:330,y:350,r:13,speed:175,energy:100,money:5000,
-  level:1,xp:0,ownedHouse:false,inCar:null,
-  facing:0,anim:0,jump:0
+  lane:0,laneVisual:0,jump:0,jumpVelocity:0,
+  slide:0,runTime:0,hitFlash:0
 };
+let objects=[];
+let particles=[];
+let scenery=[];
+let shake=0;
+let touchStart=null;
 
-const buildings=[];
-const trees=[];
-const people=[];
-const cars=[];
-const roads=[
-  {x:0,y:250,w:WORLD.w,h:100},
-  {x:0,y:720,w:WORLD.w,h:110},
-  {x:0,y:1240,w:WORLD.w,h:105},
-  {x:450,y:0,w:105,h:WORLD.h},
-  {x:1120,y:0,w:115,h:WORLD.h},
-  {x:1830,y:0,w:105,h:WORLD.h}
-];
-
-function addBuilding(x,y,w,h,type,name,color){
-  buildings.push({x,y,w,h,type,name,color});
+function resetGame(){
+  player.lane=0;player.laneVisual=0;player.jump=0;
+  player.jumpVelocity=0;player.slide=0;player.runTime=0;player.hitFlash=0;
+  objects=[];particles=[];scenery=[];
+  elapsed=0;spawnClock=.6;worldTravel=0;
+  score=0;coins=0;speed=.34;shake=0;
+  for(let i=0;i<28;i++)scenery.push({z:i/28,lane:i%2? -1:1,side:i%2? -1:1,seed:Math.random()});
+  updateHUD();
 }
-addBuilding(100,80,220,125,"food","Mama Put Kitchen","#bf7040");
-addBuilding(650,90,235,140,"shop","Mega Market","#6384a5");
-addBuilding(1320,90,240,145,"house","Your Dream Home","#c9a46a");
-addBuilding(2020,80,250,150,"culture","Freedom Park","#4b966a");
-addBuilding(100,410,240,190,"market","Island Market","#a65e4b");
-addBuilding(650,410,230,175,"culture","Art Gallery","#9b73b9");
-addBuilding(1320,420,240,170,"food","Suya Spot","#bc5d39");
-addBuilding(2020,410,250,190,"shop","City Mall","#547d9e");
-addBuilding(100,900,240,185,"court","Basketball Court","#4c9665");
-addBuilding(650,920,235,175,"house","Lekki Residence","#d4b57b");
-addBuilding(1320,900,250,190,"culture","National Theatre","#9871ad");
-addBuilding(2020,900,245,180,"market","Delivery Depot","#a65e4b");
-addBuilding(100,1450,250,180,"food","Buka Express","#bc7042");
-addBuilding(650,1460,230,170,"shop","Phone Store","#6089a5");
-addBuilding(1320,1450,250,180,"house","Luxury Estate","#d4b57b");
-addBuilding(2020,1450,240,180,"culture","Beach Festival","#4299a0");
-
-for(let i=0;i<80;i++){
-  let x=rand(25,WORLD.w-25),y=rand(25,WORLD.h-25);
-  if(!roads.some(r=>x>r.x-30&&x<r.x+r.w+30&&y>r.y-30&&y<r.y+r.h+30)&&
-     !buildings.some(b=>x>b.x-35&&x<b.x+b.w+35&&y>b.y-35&&y<b.y+b.h+35)){
-    trees.push({x,y,r:rand(9,17)});
+function startGame(){
+  resetGame();state="playing";
+  $("overlay").classList.add("hidden");
+  $("pause").textContent="Ⅱ";
+}
+function pauseGame(){
+  if(state==="playing"){
+    state="paused";showCard("pauseCard");$("pause").textContent="▶";
+  }else if(state==="paused"){
+    state="playing";$("overlay").classList.add("hidden");$("pause").textContent="Ⅱ";
   }
 }
-
-const carColors=["#e0b64f","#e7e8eb","#2f87b7","#c54f43","#56a67d","#353c44"];
-for(let i=0;i<17;i++){
-  const horizontal=i%2===0;
-  const road=horizontal?roads[i%3]:roads[3+(i%3)];
-  cars.push({
-    x:horizontal?rand(0,WORLD.w):road.x+rand(15,90),
-    y:horizontal?road.y+rand(15,80):rand(0,WORLD.h),
-    angle:horizontal?0:Math.PI/2,
-    speed:rand(35,80)*(Math.random()<.5?-1:1),
-    color:carColors[i%carColors.length],occupied:false,
-    w:36,h:19
-  });
+function showCard(id){
+  $("overlay").classList.remove("hidden");
+  ["startCard","pauseCard","overCard"].forEach(n=>$(n).classList.toggle("hidden",n!==id));
+}
+function endGame(){
+  if(state!=="playing")return;
+  state="over";
+  best=Math.max(best,score);
+  try{localStorage.setItem("ekoRunnerBest",String(best))}catch(e){}
+  $("finalScore").textContent=Math.floor(score).toLocaleString();
+  $("finalCoins").textContent=coins;
+  $("finalDistance").textContent=Math.floor(worldTravel)+"m";
+  $("bestLabel").textContent="BEST SCORE: "+Math.floor(best).toLocaleString();
+  showCard("overCard");$("pause").textContent="↻";
+}
+function updateHUD(){
+  $("score").textContent=Math.floor(score).toLocaleString();
+  $("coins").textContent=coins;
+  $("progressFill").style.width=(worldTravel%500)/5+"%";
 }
 
-const names=["Tunde","Amaka","Chidi","Zainab","Bola","Kemi","Seyi","Emeka","Ngozi","Femi","Ayo","Ife"];
-for(let i=0;i<24;i++){
-  people.push({
-    x:rand(40,WORLD.w-40),y:rand(40,WORLD.h-40),
-    name:names[i%names.length],color=["#ffbf69","#a0d8ef","#ed9bc2","#b3e59f"][i%4],
-    dx:rand(-1,1),dy:rand(-1,1),change:rand(1,4)
-  });
+function laneChange(dir){
+  if(state!=="playing")return;
+  player.lane=clamp(player.lane+dir,-1,1);
+  burst(player.lane,0.94,"#ffe16a",3);
 }
+function jump(){
+  if(state!=="playing"||player.jump>0||player.slide>0)return;
+  player.jump=0.001;player.jumpVelocity=1.42;
+}
+function slide(){
+  if(state!=="playing"||player.slide>0)return;
+  player.slide=.62;
+}
+$("left").onclick=()=>laneChange(-1);
+$("right").onclick=()=>laneChange(1);
+$("jump").onclick=jump;
+$("slide").onclick=slide;
+$("pause").onclick=()=>state==="over"?startGame():pauseGame();
+$("startBtn").onclick=startGame;
+$("resumeBtn").onclick=pauseGame;
+$("restartPause").onclick=startGame;
+$("restartBtn").onclick=startGame;
 
-const missionList=[
- {id:"welcome",title:"First Day in Lagos",desc:"Visit a food spot and buy something to eat.",type:"food",goal:1,xp:100,cash:500,level:1},
- {id:"hustle",title:"Make Your First Hustle",desc:"Complete a delivery job at a market or depot.",type:"market",goal:1,xp:150,cash:1200,level:1},
- {id:"explore",title:"Know Your City",desc:"Visit a cultural attraction and explore Lagos.",type:"culture",goal:1,xp:200,cash:1000,level:2},
- {id:"driver",title:"Take the Wheel",desc:"Get into a car and take a drive around town.",type:"drive",goal:1,xp:250,cash:1500,level:2},
- {id:"hoops",title:"Street Basketball",desc:"Visit the basketball court and play a round.",type:"court",goal:1,xp:300,cash:1800,level:3},
- {id:"property",title:"A Place to Call Home",desc:"Save up and purchase your own home.",type:"house",goal:1,xp:500,cash:2500,level:3},
- {id:"roadtrip",title:"City Explorer",desc:"Drive a vehicle and visit a new district.",type:"drive2",goal:2,xp:350,cash:2000,level:4}
-];
-
-let completed=[];
-let counts={};
-let toastOpen=false;
-
-function saveGame(){
-  const data={
-    x:player.x,y:player.y,money:player.money,energy:player.energy,
-    level:player.level,xp:player.xp,ownedHouse:player.ownedHouse,
-    completed,counts
-  };
-  try{localStorage.setItem("ekoHorizonsSave",JSON.stringify(data));}catch(e){}
-}
-function loadGame(){
-  try{
-    const s=JSON.parse(localStorage.getItem("ekoHorizonsSave")||"null");
-    if(!s)return;
-    player.x=s.x??player.x;player.y=s.y??player.y;
-    player.money=s.money??player.money;player.energy=s.energy??100;
-    player.level=s.level??1;player.xp=s.xp??0;
-    player.ownedHouse=s.ownedHouse??false;
-    completed=s.completed||[];counts=s.counts||{};
-  }catch(e){}
-}
-loadGame();
-
-function showMessage(title,text){
-  document.getElementById("toastTitle").textContent=title;
-  document.getElementById("toastText").textContent=text;
-  document.getElementById("toast").style.display="block";
-  toastOpen=true;
-  clearTimeout(toastTimer);
-}
-function closeMessage(){
-  document.getElementById("toast").style.display="none";
-  toastOpen=false;
-}
-document.getElementById("toastClose").onclick=closeMessage;
-
-function playTone(freq=500,duration=.08){
-  if(!soundOn)return;
-  try{
-    audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.frequency.value=freq;g.gain.value=.045;
-    o.connect(g);g.connect(audioCtx.destination);
-    o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
-    o.stop(audioCtx.currentTime+duration);
-  }catch(e){}
-}
-document.getElementById("soundBtn").onclick=()=>{
-  soundOn=!soundOn;
-  document.getElementById("soundBtn").textContent="SOUND: "+(soundOn?"ON":"OFF");
-  playTone(650);
+const keyMap={
+ ArrowLeft:()=>laneChange(-1),a:()=>laneChange(-1),A:()=>laneChange(-1),
+ ArrowRight:()=>laneChange(1),d:()=>laneChange(1),D:()=>laneChange(1),
+ ArrowUp:jump," ":jump,w:jump,W:jump,
+ ArrowDown:slide,s:slide,S:slide
 };
-document.getElementById("saveBtn").onclick=()=>{
-  saveGame();showMessage("Game Saved","Your progress has been saved on this device.");
-};
+addEventListener("keydown",e=>{
+  if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," "].includes(e.key))e.preventDefault();
+  if(e.key==="Escape"||e.key==="p"||e.key==="P"){pauseGame();return}
+  if(state==="menu"&&e.key==="Enter"){startGame();return}
+  if(keyMap[e.key])keyMap[e.key]();
+});
+canvas.addEventListener("pointerdown",e=>{
+  touchStart={x:e.clientX,y:e.clientY,time:performance.now()};
+});
+canvas.addEventListener("pointerup",e=>{
+  if(!touchStart||state!=="playing")return;
+  const dx=e.clientX-touchStart.x,dy=e.clientY-touchStart.y;
+  if(Math.max(Math.abs(dx),Math.abs(dy))>30){
+    if(Math.abs(dx)>Math.abs(dy))laneChange(dx>0?1:-1);
+    else if(dy<0)jump();else slide();
+  }
+  touchStart=null;
+});
+canvas.addEventListener("pointercancel",()=>touchStart=null);
 
-function currentMission(){
-  return missionList.find(m=>!completed.includes(m.id)&&player.level>=m.level);
+function spawn(type,lane,z=0){
+  objects.push({type,lane,z,phase:Math.random()*6,hit:false});
 }
-function renderMissions(){
-  const m=currentMission();
-  document.getElementById("level").textContent=player.level;
-  document.getElementById("cash").textContent=Math.floor(player.money).toLocaleString("en-NG");
-  document.getElementById("xp").textContent=player.xp;
-  document.getElementById("energy").textContent=Math.round(player.energy);
-  const needed=player.level*200;
-  document.getElementById("xpFill").style.width=clamp(player.xp/needed*100,0,100)+"%";
-  document.getElementById("xpLabel").textContent=`${player.xp} / ${needed} XP to next level`;
-
-  if(!m){
-    document.getElementById("missionTitle").textContent="City Legend!";
-    document.getElementById("missionDesc").textContent="You've completed every mission. Explore the city and enjoy your success!";
-    document.getElementById("missionFill").style.width="100%";
-    document.getElementById("missionProgress").textContent="All missions complete";
-    document.getElementById("missionReward").textContent="You are a Lagos legend!";
+function spawnPattern(){
+  const roll=Math.random();
+  if(roll<.27){
+    const lane=Math.floor(rand(-1,2));
+    spawn("train",lane);
+    if(Math.random()<.65){
+      const other=choose([-1,0,1].filter(x=>x!==lane));
+      for(let i=0;i<5;i++)spawn("coin",other,-.05-i*.055);
+    }
+  }else if(roll<.52){
+    const lane=Math.floor(rand(-1,2));
+    spawn(choose(["barrier","crate"]),lane);
+    const other=choose([-1,0,1].filter(x=>x!==lane));
+    for(let i=0;i<4;i++)spawn("coin",other,-.05-i*.05);
+  }else if(roll<.70){
+    const lane=Math.floor(rand(-1,2));
+    spawn("overhead",lane);
+    const other=choose([-1,0,1].filter(x=>x!==lane));
+    for(let i=0;i<3;i++)spawn("coin",other,-.04-i*.05);
   }else{
-    const c=counts[m.type]||0;
-    document.getElementById("missionTitle").textContent=m.title;
-    document.getElementById("missionDesc").textContent=m.desc;
-    document.getElementById("missionFill").style.width=clamp(c/m.goal*100,0,100)+"%";
-    document.getElementById("missionProgress").textContent=`${Math.min(c,m.goal)} / ${m.goal} completed · Unlock level ${m.level}`;
-    document.getElementById("missionReward").textContent=`Reward: +${m.xp} XP · ₦${m.cash.toLocaleString("en-NG")}`;
-  }
-
-  document.getElementById("missionItems").innerHTML=missionList.map(m=>{
-    const done=completed.includes(m.id);
-    const unlocked=player.level>=m.level;
-    return `<div class="missionItem"><strong>${done?"✓":unlocked?"★":"🔒"} ${m.title}</strong>
-      <p>${m.desc}</p><span class="tag">${done?"COMPLETED":unlocked?"AVAILABLE":"LEVEL "+m.level+" REQUIRED"} · ${m.xp} XP · ₦${m.cash}</span></div>`;
-  }).join("");
-}
-
-function addXP(amount){
-  player.xp+=amount;
-  let leveled=false;
-  while(player.xp>=player.level*200){
-    player.xp-=player.level*200;
-    player.level++;
-    leveled=true;
-  }
-  return leveled;
-}
-function objective(type){
-  counts[type]=(counts[type]||0)+1;
-  let leveled=false;
-  const m=currentMission();
-  if(m && m.type===type && counts[type]>=m.goal && !completed.includes(m.id)){
-    completed.push(m.id);
-    player.money+=m.cash;
-    leveled=addXP(m.xp);
-    saveGame();
-    renderMissions();
-    playTone(780,.15);
-    showMessage(leveled?"MISSION COMPLETE — LEVEL UP!":"MISSION COMPLETE!",
-      `${m.title} completed! You earned ₦${m.cash.toLocaleString("en-NG")} and ${m.xp} XP.`+
-      (leveled?` You are now Level ${player.level}!`:""));
-    return;
-  }
-  // Count driving visits separately for the final exploration mission.
-  if(type==="drive" && counts.drive>=2 && !completed.includes("roadtrip")){
-    const finalMission=missionList.find(x=>x.id==="roadtrip");
-    if(player.level>=finalMission.level){
-      completed.push("roadtrip");
-      player.money+=finalMission.cash;
-      leveled=addXP(finalMission.xp);
-      showMessage("CITY EXPLORER COMPLETE!",`You earned ₦${finalMission.cash.toLocaleString("en-NG")} and ${finalMission.xp} XP.`);
+    const lane=Math.floor(rand(-1,2));
+    for(let i=0;i<7;i++)spawn("coin",lane,-.03-i*.055);
+    if(Math.random()<.45){
+      const other=choose([-1,0,1].filter(x=>x!==lane));
+      spawn("crate",other,-.3);
     }
   }
-  renderMissions();
-  saveGame();
 }
 
-document.getElementById("missionsBtn").onclick=()=>{
-  const el=document.getElementById("missionList");
-  el.style.display=el.style.display==="block"?"none":"block";
-};
+function project(z,lane){
+  const horizon=H*.27;
+  const bottom=H*1.02;
+  const depth=clamp(z,0,1.12);
+  const t=depth;
+  const y=horizon+(bottom-horizon)*t;
+  const halfTrack=lerp(W*.065,W*.49,t);
+  const laneWidth=halfTrack*2/3;
+  const x=W/2+lane*laneWidth;
+  const scale=.12+1.02*t*t;
+  return {x,y,scale,halfTrack,laneWidth,t};
+}
+function groundY(){return H*.89}
+function poly(points,fill,stroke=null){
+  ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);
+  for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);
+  ctx.closePath();ctx.fillStyle=fill;ctx.fill();
+  if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}
+}
+function drawSky(){
+  const g=ctx.createLinearGradient(0,0,0,H*.7);
+  g.addColorStop(0,"#58bde5");g.addColorStop(.55,"#a4e3ee");g.addColorStop(1,"#ffe2ad");
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // Lagos sun and atmospheric glow
+  const sunX=W*.76,sunY=H*.16;
+  const glow=ctx.createRadialGradient(sunX,sunY,3,sunX,sunY,H*.18);
+  glow.addColorStop(0,"#fff8c8aa");glow.addColorStop(1,"#fff8c800");
+  ctx.fillStyle=glow;ctx.fillRect(sunX-H*.2,sunY-H*.2,H*.4,H*.4);
+  ctx.fillStyle="#fff1a9";ctx.beginPath();ctx.arc(sunX,sunY,Math.min(W,H)*.045,0,Math.PI*2);ctx.fill();
 
-function getBuildingAt(x,y){
-  return buildings.find(b=>x>=b.x-10&&x<=b.x+b.w+10&&y>=b.y-10&&y<=b.y+b.h+10);
-}
-function canMoveTo(x,y){
-  if(x<15||y<15||x>WORLD.w-15||y>WORLD.h-15)return false;
-  if(buildings.some(b=>x>b.x-12&&x<b.x+b.w+12&&y>b.y-12&&y<b.y+b.h+12))return false;
-  return true;
-}
-function nearby(){
-  const target=player.inCar||player;
-  let best=null,bestD=Infinity;
-  const candidates=[
-    ...buildings.map(obj=>({kind:"building",obj,x:obj.x+obj.w/2,y:obj.y+obj.h/2})),
-    ...cars.filter(c=>!c.occupied).map(obj=>({kind:"car",obj,x:obj.x,y:obj.y})),
-    ...people.map(obj=>({kind:"person",obj,x:obj.x,y:obj.y}))
-  ];
-  for(const c of candidates){
-    const d=Math.hypot(c.x-target.x,c.y-target.y);
-    if(d<90&&d<bestD){best=c;bestD=d;}
+  // Distant Lagos skyline
+  const base=H*.37;
+  ctx.fillStyle="#638e9c";
+  for(let i=0;i<25;i++){
+    const x=i*W/21-(worldTravel*.04%50);
+    const bw=randSeed(i,15,30),bh=randSeed(i+5,H*.035,H*.16);
+    ctx.fillRect(x,base-bh,bw,bh);
   }
-  return best;
+  ctx.fillStyle="#426c7c";
+  for(let i=0;i<13;i++){
+    const x=i*W/11-(worldTravel*.07%65);
+    const bw=randSeed(i+10,20,43),bh=randSeed(i+20,H*.06,H*.21);
+    ctx.fillRect(x,base-bh,bw,bh);
+    ctx.fillStyle="#9ac7c6";
+    for(let wx=x+5;wx<x+bw-3;wx+=8)
+      for(let wy=base-bh+7;wy<base-5;wy+=11)ctx.fillRect(wx,wy,3,4);
+    ctx.fillStyle="#426c7c";
+  }
+  // Tropical green belt
+  ctx.fillStyle="#39795e";ctx.fillRect(0,base,W,H-base);
+  for(let i=0;i<18;i++){
+    const x=i*W/16-(worldTravel*.11%45);
+    drawPalm(x,base+randSeed(i,0,H*.035),randSeed(i+40,.45,.8));
+  }
+}
+function randSeed(n,min,max){
+  const v=Math.sin(n*127.1+78.23)*43758.5453;
+  return min+(v-Math.floor(v))*(max-min);
+}
+function drawPalm(x,y,s){
+  ctx.save();ctx.translate(x,y);ctx.scale(s,s);
+  ctx.strokeStyle="#68523a";ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(5,-25,0,-47);ctx.stroke();
+  ctx.strokeStyle="#245b3f";ctx.lineWidth=5;
+  for(let i=0;i<7;i++){
+    const a=Math.PI*2*i/7;
+    ctx.beginPath();ctx.moveTo(0,-46);ctx.quadraticCurveTo(Math.cos(a)*18,-54+Math.sin(a)*10,Math.cos(a)*37,-42+Math.sin(a)*25);ctx.stroke();
+  }
+  ctx.restore();
+}
+function drawTrack(){
+  const hy=H*.27,bottom=H*1.03;
+  poly([[W/2-W*.065,hy],[W/2+W*.065,hy],[W*.99,bottom],[W*.01,bottom]],"#53585c");
+  // Outer ground strips
+  poly([[0,hy],[W/2-W*.065,hy],[W*.01,bottom],[0,bottom]],"#3b8058");
+  poly([[W/2+W*.065,hy],[W,hy],[W,bottom],[W*.99,bottom]],"#3b8058");
+
+  // Railway sleepers
+  for(let i=0;i<18;i++){
+    let z=((i/18+worldTravel*.007)%1);
+    const y=hy+(bottom-hy)*z*z;
+    const half=lerp(W*.065,W*.49,z);
+    ctx.strokeStyle="#292f34";ctx.lineWidth=lerp(1,7,z);
+    ctx.beginPath();ctx.moveTo(W/2-half,y);ctx.lineTo(W/2+half,y);ctx.stroke();
+  }
+  // Rails and lane lines
+  for(let i=-1;i<=1;i++){
+    const xTop=W/2+i*W*.043,xBottom=W/2+i*W*.326;
+    ctx.strokeStyle=i===0?"#b8b8b1":"#d1c8b0";
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(xTop,hy);ctx.lineTo(xBottom,bottom);ctx.stroke();
+  }
+  // Side advertising signs
+  for(let i=0;i<5;i++){
+    const z=((i/5+worldTravel*.003)%1);
+    const y=hy+(bottom-hy)*z*z;
+    const scale=.15+z*1.3;
+    [-1,1].forEach(side=>{
+      const x=W/2+side*(W*.07+z*W*.46);
+      ctx.fillStyle="#f8bf3f";ctx.fillRect(x-14*scale,y-24*scale,28*scale,17*scale);
+      ctx.fillStyle="#293b43";ctx.font=`bold ${Math.max(3,7*scale)}px Arial`;ctx.textAlign="center";
+      ctx.fillText("EKO",x,y-13*scale);
+    });
+  }
 }
 
-function interact(){
-  if(toastOpen){closeMessage();return;}
-  const n=nearby();
-  if(!n){
-    showMessage("Explore Lagos","Walk around the city and approach buildings, cars, and people to interact.");
-    return;
-  }
-  if(n.kind==="car"){
-    player.inCar=n.obj;n.obj.occupied=true;
-    showMessage("Vehicle Entered","You are now driving. Use WASD or the arrow keys to drive. Press E or INTERACT to leave the car.");
-    objective("drive");
-    return;
-  }
-  if(n.kind==="person"){
-    showMessage(n.obj.name,"“Lagos is full of opportunities! Visit a market for a delivery job, explore attractions, and complete your missions.”");
-    return;
-  }
-  const b=n.obj;
-  switch(b.type){
-    case "food":
-      if(player.money<350){showMessage("Not Enough Money","You need ₦350 to buy a meal. Try a delivery job first.");return;}
-      player.money-=350;player.energy=clamp(player.energy+25,0,100);
-      objective("food");
-      showMessage("Meal Purchased","You bought a delicious local meal for ₦350. Your energy has been restored.");
-      break;
-    case "market":
-      if(player.money<100){showMessage("Delivery Job","You need ₦100 for transport to start this delivery.");return;}
-      player.money-=100;
-      const earning=750+Math.floor(Math.random()*550);
-      player.money+=earning;player.energy=clamp(player.energy-8,0,100);
-      objective("market");
-      showMessage("Delivery Completed",`Nice work! Your delivery earned ₦${earning.toLocaleString("en-NG")}.`);
-      break;
-    case "shop":
-      showMessage(b.name,"Welcome! This shop is a city landmark. Keep exploring to find food spots, jobs, and attractions.");
-      break;
-    case "culture":
-      objective("culture");
-      showMessage(b.name,"You explored a Lagos attraction. Take a look around and discover more of the city!");
-      break;
-    case "court":
-      objective("court");
-      player.energy=clamp(player.energy-5,0,100);
-      showMessage("Basketball Time","You played a round of street basketball! Keep your energy up by buying food.");
-      break;
-    case "house":
-      if(player.ownedHouse){
-        player.x=b.x+b.w/2;player.y=b.y+b.h+35;
-        player.energy=100;
-        showMessage("Welcome Home","You rested at home and restored your energy to 100%.");
-      }else if(player.money>=15000){
-        player.money-=15000;player.ownedHouse=true;
-        objective("house");
-        showMessage("Congratulations!","You bought your first home for ₦15,000. Your property ownership is saved with your game.");
-      }else{
-        showMessage("Property for Sale","This property costs ₦15,000. Complete delivery jobs and missions to earn more money.");
-      }
-      break;
-  }
-  renderMissions();
+function rounded(x,y,w,h,r,color,stroke){
+  ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=color;ctx.fill();
+  if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}
 }
-
-document.getElementById("interact").onclick=interact;
-document.getElementById("jump").onclick=()=>{player.jump=12;playTone(400);};
-addEventListener("keydown",e=>{
-  const k=e.key.toLowerCase();
-  keys[k]=true;
-  if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(k))e.preventDefault();
-  if(k==="e"&&!e.repeat)interact();
-  if(k===" "&&!e.repeat)player.jump=12;
-});
-addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
-addEventListener("blur",()=>Object.keys(keys).forEach(k=>keys[k]=false));
-
-const touch={};
-function bindMove(id,key){
-  const el=document.getElementById(id);
-  const down=e=>{e.preventDefault();touch[key]=true;el.setPointerCapture?.(e.pointerId);};
-  const up=e=>{e.preventDefault();touch[key]=false;};
-  el.addEventListener("pointerdown",down);
-  el.addEventListener("pointerup",up);
-  el.addEventListener("pointercancel",up);
-  el.addEventListener("lostpointercapture",up);
+function drawCoin(o,p){
+  const s=p.scale;
+  const r=8*s;
+  const spin=Math.abs(Math.sin(elapsed*8+o.phase));
+  ctx.save();ctx.translate(p.x,p.y-r*1.5);
+  ctx.scale(Math.max(.18,spin),1);
+  ctx.fillStyle="#9b6216";ctx.beginPath();ctx.ellipse(2,3,r,r*1.2,0,0,Math.PI*2);ctx.fill();
+  const grad=ctx.createLinearGradient(-r,0,r,0);
+  grad.addColorStop(0,"#d78c18");grad.addColorStop(.5,"#fff19a");grad.addColorStop(1,"#efa51d");
+  ctx.fillStyle=grad;ctx.beginPath();ctx.ellipse(0,0,r,r*1.2,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle="#fff5ba";ctx.lineWidth=Math.max(1,s);ctx.stroke();
+  ctx.fillStyle="#a66b13";ctx.font=`bold ${Math.max(5,10*s)}px Arial`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("₦",0,1);
+  ctx.restore();
 }
-bindMove("up","arrowup");bindMove("down","arrowdown");
-bindMove("left","arrowleft");bindMove("right","arrowright");
-bindMove("sprint","shift");
-
-function pressed(k){return !!keys[k]||!!touch[k];}
+function drawTrain(o,p){
+  const s=p.scale,x=p.x,y=p.y;
+  const w=70*s,h=100*s;
+  // Track shadow
+  ctx.fillStyle="#1d292d66";ctx.beginPath();ctx.ellipse(x,y,w*.75,h*.13,0,0,Math.PI*2);ctx.fill();
+  // Train front, with depth
+  poly([[x-w*.55,y-h],[x+w*.55,y-h],[x+w*.48,y],[x-w*.48,y]],"#e7bd43","#4a3a24");
+  poly([[x-w*.55,y-h],[x+w*.55,y-h],[x+w*.42,y-h*.84],[x-w*.42,y-h*.84]],"#f9df8a");
+  rounded(x-w*.35,y-h*.76,w*.7,h*.31,4*s,"#253c4a","#f9e4a5");
+  ctx.fillStyle="#9ddbe9";
+  ctx.fillRect(x-w*.29,y-h*.71,w*.25,h*.20);
+  ctx.fillRect(x+w*.04,y-h*.71,w*.25,h*.20);
+  ctx.fillStyle="#fff4be";
+  ctx.fillRect(x-w*.42,y-h*.22,w*.18,h*.08);
+  ctx.fillRect(x+w*.24,y-h*.22,w*.18,h*.08);
+  ctx.fillStyle="#2c3136";ctx.fillRect(x-w*.45,y-h*.09,w*.9,h*.1);
+  ctx.fillStyle="#d64a34";ctx.fillRect(x-w*.42,y-h*.04,w*.84,h*.035);
+  ctx.textAlign="center";ctx.fillStyle="#34424b";ctx.font=`bold ${Math.max(5,11*s)}px Arial`;
+  ctx.fillText("LAGOS EXPRESS",x,y-h*.43);
+}
+function drawBarrier(o,p){
+  const s=p.scale,x=p.x,y=p.y,w=48*s,h=32*s;
+  ctx.fillStyle="#1d252c66";ctx.beginPath();ctx.ellipse(x,y,w*.7,5*s,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#fff0d3";ctx.fillRect(x-w/2,y-h,w,h);
+  ctx.save();ctx.beginPath();ctx.rect(x-w/2,y-h,w,h);ctx.clip();
+  ctx.strokeStyle="#ed573d";ctx.lineWidth=9*s;
+  for(let i=-2;i<7;i++) {ctx.beginPath();ctx.moveTo(x-w/2+i*15*s,y);ctx.lineTo(x-w/2+i*15*s+25*s,y-h);ctx.stroke();}
+  ctx.restore();
+  ctx.fillStyle="#303b40";ctx.fillRect(x-w*.4,y-h*.06,w*.8,h*.1);
+  ctx.fillStyle="#fff";ctx.fillRect(x-w*.35,y-h*.92,w*.7,h*.16);
+}
+function drawCrate(o,p){
+  const s=p.scale,x=p.x,y=p.y,w=42*s,h=43*s;
+  ctx.fillStyle="#744523";ctx.fillRect(x-w/2,y-h,w,h);
+  ctx.fillStyle="#b77a3b";ctx.fillRect(x-w*.42,y-h*.92,w*.84,h*.82);
+  ctx.strokeStyle="#6c431f";ctx.lineWidth=2*s;
+  ctx.strokeRect(x-w*.42,y-h*.92,w*.84,h*.82);
+  ctx.beginPath();ctx.moveTo(x-w*.4,y-h*.9);ctx.lineTo(x+w*.4,y-h*.12);ctx.moveTo(x+w*.4,y-h*.9);ctx.lineTo(x-w*.4,y-h*.12);ctx.stroke();
+  ctx.fillStyle="#f4d38a";ctx.fillRect(x-w*.1,y-h*.7,w*.2,h*.4);
+}
+function drawOverhead(o,p){
+  const s=p.scale,x=p.x,y=p.y,w=68*s,h=76*s;
+  // Sign hanging over the lane: slide underneath.
+  ctx.fillStyle="#303a3c";ctx.fillRect(x-w*.43,y-h,w*.08,h);
+  ctx.fillRect(x+w*.35,y-h,w*.08,h);
+  rounded(x-w*.56,y-h,w*1.12,h*.38,4*s,"#df663c","#fff0ca");
+  ctx.fillStyle="#fff6db";ctx.font=`bold ${Math.max(5,10*s)}px Arial`;ctx.textAlign="center";
+  ctx.fillText("LOW CLEARANCE",x,y-h*.76);
+  ctx.strokeStyle="#fff0ca";ctx.lineWidth=2*s;
+  ctx.beginPath();ctx.moveTo(x-w*.35,y-h*.1);ctx.lineTo(x+w*.35,y-h*.1);ctx.stroke();
+}
+function drawObjects(){
+  const sorted=[...objects].sort((a,b)=>a.z-b.z);
+  for(const o of sorted){
+    if(o.z<-.2||o.z>1.12)continue;
+    const p=project(o.z,o.lane);
+    if(o.type==="coin")drawCoin(o,p);
+    else if(o.type==="train")drawTrain(o,p);
+    else if(o.type==="barrier")drawBarrier(o,p);
+    else if(o.type==="crate")drawCrate(o,p);
+    else if(o.type==="overhead")drawOverhead(o,p);
+  }
+}
+function drawRunner(){
+  const laneX=project(.92,player.laneVisual).x;
+  const base=H*.86;
+  const jumpHeight=player.jump>0?Math.sin(Math.min(1,player.jump)*Math.PI)*H*.19:0;
+  const slideOn=player.slide>0;
+  const run=Math.sin(player.runTime*13);
+  const s=clamp(Math.min(W/440,H/500),.72,1.35);
+  ctx.save();ctx.translate(laneX,base-jumpHeight);
+  // shadow
+  ctx.fillStyle="#17272c66";ctx.beginPath();ctx.ellipse(0,5+ jumpHeight*.15,20*s,7*s,0,0,Math.PI*2);ctx.fill();
+  if(slideOn){
+    ctx.rotate(-.15);
+    // sliding body
+    ctx.fillStyle="#212d35";
+    rounded(-20*s,-1*s,42*s,12*s,6*s,"#263642");
+    rounded(-15*s,-10*s,30*s,15*s,7*s,"#ff8d39");
+    ctx.fillStyle="#603f2b";ctx.beginPath();ctx.arc(17*s,-8*s,8*s,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#171d24";ctx.fillRect(-21*s,6*s,17*s,5*s);ctx.fillRect(5*s,6*s,19*s,5*s);
+  }else{
+    // legs
+    ctx.strokeStyle="#202c35";ctx.lineWidth=7*s;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(-5*s,-4*s);ctx.lineTo((-10+run*7)*s,12*s);ctx.lineTo((-15-run*4)*s,20*s);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(5*s,-4*s);ctx.lineTo((10-run*7)*s,12*s);ctx.lineTo((15+run*4)*s,20*s);ctx.stroke();
+    // sneakers
+    ctx.fillStyle="#f8f3e4";rounded((-23-run*4)*s,17*s,15*s,6*s,3*s,"#f8f3e4");
+    rounded((8+run*4)*s,17*s,15*s,6*s,3*s,"#f8f3e4");
+    // arms
+    ctx.strokeStyle="#a56d4c";ctx.lineWidth=6*s;
+    ctx.beginPath();ctx.moveTo(-8*s,-24*s);ctx.lineTo((-15-run*5)*s,(-12+run*6)*s);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(8*s,-24*s);ctx.lineTo((15+run*5)*s,(-12-run*6)*s);ctx.stroke();
+    // hoodie
+    rounded(-12*s,-34*s,24*s,32*s,7*s,"#ff8b32","#e75e21");
+    ctx.fillStyle="#ffd16a";ctx.fillRect(-7*s,-25*s,14*s,3*s);
+    ctx.fillStyle="#f0c49a";ctx.beginPath();ctx.arc(0,-43*s,10*s,0,Math.PI*2);ctx.fill();
+    // hair
+    ctx.fillStyle="#202126";ctx.beginPath();ctx.arc(0,-47*s,10*s,Math.PI,Math.PI*2);ctx.fill();
+    ctx.fillRect(-10*s,-47*s,4*s,7*s);ctx.fillRect(6*s,-47*s,4*s,7*s);
+    // backpack
+    rounded(-17*s,-32*s,9*s,19*s,4*s,"#263c52","#52758a");
+  }
+  ctx.restore();
+}
+function burst(lane,z,color,n=8){
+  const p=project(z,lane);
+  for(let i=0;i<n;i++){
+    particles.push({x:p.x,y:p.y,vx:rand(-90,90),vy:rand(-130,30),life:rand(.25,.55),max:.55,color});
+  }
+}
+function drawParticles(dt){
+  for(const p of particles){
+    p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=200*dt;p.life-=dt;
+    ctx.globalAlpha=clamp(p.life/p.max,0,1);
+    ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;particles=particles.filter(p=>p.life>0);
+}
+function drawSpeedLines(){
+  if(speed<.45)return;
+  ctx.strokeStyle="#ffffff32";ctx.lineWidth=2;
+  for(let i=0;i<8;i++){
+    const x=(i*137+elapsed*90)%W;
+    const y=(i*83+elapsed*210)%(H*.75);
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-7,y+24+speed*30);ctx.stroke();
+  }
+}
 
 function update(dt){
-  frame++;
-  // People wander around.
-  for(const p of people){
-    p.change-=dt;
-    if(p.change<=0){p.dx=rand(-1,1);p.dy=rand(-1,1);p.change=rand(1,4);}
-    const nx=p.x+p.dx*20*dt,ny=p.y+p.dy*20*dt;
-    if(canMoveTo(nx,ny)){p.x=nx;p.y=ny;}
+  if(state!=="playing")return;
+  elapsed+=dt;
+  worldTravel+=speed*dt*34;
+  score+=dt*(10+speed*5);
+  speed=Math.min(.66,.34+elapsed*.0025);
+  player.runTime+=dt;
+  player.laneVisual=lerp(player.laneVisual,player.lane,Math.min(1,dt*12));
+  player.hitFlash=Math.max(0,player.hitFlash-dt);
+
+  if(player.jump>0){
+    player.jump+=player.jumpVelocity*dt;
+    player.jumpVelocity-=3.7*dt;
+    if(player.jump>=1){player.jump=0;player.jumpVelocity=0;}
+  }
+  if(player.slide>0)player.slide=Math.max(0,player.slide-dt);
+
+  spawnClock-=dt;
+  if(spawnClock<=0){
+    spawnPattern();
+    spawnClock=Math.max(.65,rand(1.05,1.5)-Math.min(.32,elapsed*.003));
   }
 
-  // Traffic travels along the roads.
-  for(const c of cars){
-    if(c.occupied)continue;
-    if(c.angle===0||c.angle===Math.PI){
-      c.x+=c.speed*dt;
-      if(c.x>WORLD.w+40)c.x=-40;
-      if(c.x<-40)c.x=WORLD.w+40;
-    }else{
-      c.y+=c.speed*dt;
-      if(c.y>WORLD.h+40)c.y=-40;
-      if(c.y<-40)c.y=WORLD.h+40;
+  for(const o of objects){
+    const prev=o.z;
+    o.z+=speed*dt;
+    if(o.type==="coin"&&!o.hit&&o.z>.84&&o.z<.99&&o.lane===player.lane){
+      o.hit=true;coins++;score+=25;burst(o.lane,o.z,"#ffe16a",9);
+    }
+    if(!o.hit&&o.type!=="coin"&&prev<.91&&o.z>=.91){
+      if(o.lane===player.lane){
+        const jumping=player.jump>.16;
+        const sliding=player.slide>.1;
+        let safe=false;
+        if(o.type==="barrier"||o.type==="crate")safe=jumping;
+        if(o.type==="overhead")safe=sliding;
+        if(o.type==="train")safe=false;
+        if(!safe){o.hit=true;shake=9;endGame();break;}
+      }
     }
   }
-
-  let dx=0,dy=0;
-  if(pressed("arrowup")||pressed("w"))dy--;
-  if(pressed("arrowdown")||pressed("s"))dy++;
-  if(pressed("arrowleft")||pressed("a"))dx--;
-  if(pressed("arrowright")||pressed("d"))dx++;
-  const moving=dx!==0||dy!==0;
-  if(moving){
-    const len=Math.hypot(dx,dy);dx/=len;dy/=len;
-    player.facing=Math.atan2(dy,dx);
-    player.anim+=dt*10;
-    const sprint=pressed("shift")&&player.energy>0&&!player.inCar;
-    let speed=player.inCar?270:(sprint?260:player.speed);
-    if(sprint)player.energy=clamp(player.energy-13*dt,0,100);
-    else if(!player.inCar)player.energy=clamp(player.energy+3*dt,0,100);
-    const target=player.inCar||player;
-    const nx=target.x+dx*speed*dt,ny=target.y+dy*speed*dt;
-    if(player.inCar){
-      target.x=clamp(nx,20,WORLD.w-20);
-      target.y=clamp(ny,20,WORLD.h-20);
-      target.angle=Math.atan2(dy,dx);
-    }else{
-      if(canMoveTo(nx,target.y))target.x=nx;
-      if(canMoveTo(target.x,ny))target.y=ny;
-    }
-  }else if(!player.inCar){
-    player.energy=clamp(player.energy+2*dt,0,100);
-  }
-  player.jump=Math.max(0,player.jump-30*dt);
-
-  const target=player.inCar||player;
-  camera.x=clamp(target.x-W/2,0,WORLD.w-W);
-  camera.y=clamp(target.y-H/2,0,WORLD.h-H);
-  renderMissions();
+  objects=objects.filter(o=>o.z<1.15&&(!o.hit||o.type!=="coin"));
+  shake=Math.max(0,shake-dt*25);
+  updateHUD();
 }
 
-function roundedRect(c,x,y,w,h,r,fill,stroke){
-  c.beginPath();c.roundRect(x,y,w,h,r);
-  if(fill){c.fillStyle=fill;c.fill();}
-  if(stroke){c.strokeStyle=stroke;c.stroke();}
-}
-function visible(x,y,pad=100){
-  return x>camera.x-pad&&x<camera.x+W+pad&&y>camera.y-pad&&y<camera.y+H+pad;
-}
-function drawRoads(){
-  ctx.fillStyle="#315b45";ctx.fillRect(0,0,WORLD.w,WORLD.h);
-  for(const r of roads){
-    ctx.fillStyle="#39434b";ctx.fillRect(r.x,r.y,r.w,r.h);
-    ctx.fillStyle="#505a60";
-    if(r.w>r.h){
-      ctx.fillRect(r.x,r.y+5,r.w,4);
-      ctx.fillRect(r.x,r.y+r.h-9,r.w,4);
-      ctx.strokeStyle="#d8c58a";ctx.lineWidth=2;ctx.setLineDash([24,18]);
-      ctx.beginPath();ctx.moveTo(r.x,r.y+r.h/2);ctx.lineTo(r.x+r.w,r.y+r.h/2);ctx.stroke();ctx.setLineDash([]);
-    }else{
-      ctx.fillRect(r.x+5,r.y,4,r.h);ctx.fillRect(r.x+r.w-9,r.y,4,r.h);
-      ctx.strokeStyle="#d8c58a";ctx.lineWidth=2;ctx.setLineDash([24,18]);
-      ctx.beginPath();ctx.moveTo(r.x+r.w/2,r.y);ctx.lineTo(r.x+r.w/2,r.y+r.h);ctx.stroke();ctx.setLineDash([]);
-    }
-  }
-}
-function drawBuildings(){
-  for(const b of buildings){
-    if(!visible(b.x,b.y,300))continue;
-    ctx.fillStyle="#18242c55";ctx.fillRect(b.x+9,b.y+10,b.w,b.h);
-    ctx.fillStyle=b.color;ctx.fillRect(b.x,b.y,b.w,b.h);
-    ctx.fillStyle="#ffffff18";ctx.fillRect(b.x+8,b.y+8,b.w-16,9);
-    ctx.strokeStyle="#f7e0ad";ctx.lineWidth=2;ctx.strokeRect(b.x,b.y,b.w,b.h);
-    // Roof detail
-    ctx.fillStyle="#111d28";
-    for(let wx=b.x+18;wx<b.x+b.w-12;wx+=36){
-      ctx.fillRect(wx,b.y+25,19,15);
-      ctx.fillRect(wx,b.y+51,19,15);
-    }
-    ctx.fillStyle="#101820";
-    ctx.fillRect(b.x+b.w/2-14,b.y+b.h-30,28,30);
-    roundedRect(ctx,b.x+8,b.y+b.h+6,b.w-16,23,7,"#12202bde","#ffffff30");
-    ctx.fillStyle="white";ctx.font="bold 12px Arial";ctx.textAlign="center";
-    ctx.fillText(b.name,b.x+b.w/2,b.y+b.h+22);
-    ctx.textAlign="left";
-    if(b.type==="house"&&!player.ownedHouse){
-      ctx.fillStyle="#ffc857";ctx.font="bold 11px Arial";
-      ctx.fillText("₦15,000",b.x+10,b.y+b.h-10);
-    }
-  }
-}
-function drawTrees(){
-  for(const t of trees){
-    if(!visible(t.x,t.y))continue;
-    ctx.fillStyle="#183b2b";ctx.beginPath();ctx.ellipse(t.x+3,t.y+6,t.r,t.r*.75,0,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#4f9a61";ctx.beginPath();ctx.arc(t.x,t.y,t.r,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#79b66b";ctx.beginPath();ctx.arc(t.x-4,t.y-4,t.r*.45,0,Math.PI*2);ctx.fill();
-  }
-}
-function drawCar(c){
-  ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.angle||0);
-  ctx.fillStyle="#111a20";roundedRect(ctx,-c.w/2+2,-c.h/2+3,c.w,c.h,5,"#101820");
-  roundedRect(ctx,-c.w/2,-c.h/2,c.w,c.h,5,c.color,"#222");
-  ctx.fillStyle="#a7d6e4";ctx.fillRect(-7,-c.h/2+3,14,c.h-6);
-  ctx.fillStyle="#fff4c4";ctx.fillRect(c.w/2-4,-c.h/2+3,3,4);ctx.fillRect(c.w/2-4,c.h/2-7,3,4);
-  ctx.fillStyle="#171c21";ctx.fillRect(-c.w/2+5,-c.h/2-2,8,4);ctx.fillRect(c.w/2-10,-c.h/2-2,7,4);
-  if(c.occupied){ctx.strokeStyle="#ffc857";ctx.lineWidth=2;ctx.strokeRect(-c.w/2-3,-c.h/2-3,c.w+6,c.h+6);}
+function render(dt){
+  ctx.save();
+  if(shake>0)ctx.translate(rand(-shake,shake),rand(-shake,shake));
+  drawSky();
+  drawTrack();
+  drawObjects();
+  drawRunner();
+  drawParticles(dt);
+  drawSpeedLines();
   ctx.restore();
-}
-function drawPerson(p){
-  if(!visible(p.x,p.y))return;
-  ctx.fillStyle="#17232c66";ctx.beginPath();ctx.ellipse(p.x,p.y+9,9,4,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle="#4a3025";ctx.beginPath();ctx.arc(p.x,p.y-7,6,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=p.color;roundedRect(ctx,p.x-7,p.y-2,14,17,5,p.color);
-  ctx.fillStyle="#252d33";ctx.fillRect(p.x-6,p.y+13,4,7);ctx.fillRect(p.x+2,p.y+13,4,7);
-}
-function drawPlayer(){
-  const p=player.inCar||player;
-  if(player.inCar)return;
-  ctx.save();ctx.translate(p.x,p.y);
-  ctx.fillStyle="#0005";ctx.beginPath();ctx.ellipse(0,9,13,6,0,0,Math.PI*2);ctx.fill();
-  const jump=player.jump>0?Math.sin(player.jump/12*Math.PI)*9:0;
-  ctx.translate(0,-jump);
-  ctx.fillStyle="#252d36";ctx.beginPath();ctx.arc(0,-8,8,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle="#ffc857";roundedRect(ctx,-8,-2,16,20,5,"#ffc857");
-  ctx.fillStyle="#1b2731";ctx.fillRect(-6,16,5,8);ctx.fillRect(2,16,5,8);
-  ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(2,-9,1.5,0,Math.PI*2);ctx.fill();
-  ctx.restore();
-}
-function drawPrompt(){
-  const n=nearby();
-  if(!n||toastOpen)return;
-  const target=player.inCar||player;
-  const x=target.x-camera.x,y=target.y-camera.y-35;
-  ctx.fillStyle="#101820e8";roundedRect(ctx,x-78,y-15,156,28,9,"#101820e8","#ffc857");
-  ctx.fillStyle="#ffc857";ctx.font="bold 11px Arial";ctx.textAlign="center";
-  let label=n.kind==="car"?"E / INTERACT · ENTER CAR":
-    n.kind==="person"?"E / INTERACT · TALK":"E / INTERACT · "+n.obj.name.toUpperCase();
-  ctx.fillText(label,x,y+3);ctx.textAlign="left";
-}
-function drawMiniMap(){
-  const mw=mapCanvas.width,mh=mapCanvas.height;
-  mctx.clearRect(0,0,mw,mh);mctx.fillStyle="#315b45";mctx.fillRect(0,0,mw,mh);
-  mctx.fillStyle="#39434b";
-  roads.forEach(r=>mctx.fillRect(r.x/WORLD.w*mw,r.y/WORLD.h*mh,r.w/WORLD.w*mw,r.h/WORLD.h*mh));
-  mctx.fillStyle="#e4c08a";
-  buildings.forEach(b=>mctx.fillRect(b.x/WORLD.w*mw,b.y/WORLD.h*mh,Math.max(2,b.w/WORLD.w*mw),Math.max(2,b.h/WORLD.h*mh)));
-  const p=player.inCar||player;
-  mctx.fillStyle="#ff5252";mctx.beginPath();mctx.arc(p.x/WORLD.w*mw,p.y/WORLD.h*mh,3,0,Math.PI*2);mctx.fill();
-}
-function render(){
-  ctx.clearRect(0,0,W,H);
-  ctx.save();ctx.translate(-camera.x,-camera.y);
-  drawRoads();drawTrees();drawBuildings();
-  cars.forEach(drawCar);people.forEach(drawPerson);drawPlayer();
-  ctx.restore();
-  drawPrompt();drawMiniMap();
+  // soft edge vignette
+  const v=ctx.createRadialGradient(W/2,H*.6,Math.min(W,H)*.25,W/2,H*.6,Math.max(W,H)*.75);
+  v.addColorStop(.5,"#00000000");v.addColorStop(1,"#07131c55");
+  ctx.fillStyle=v;ctx.fillRect(0,0,W,H);
 }
 function loop(now){
-  const dt=Math.min((now-lastTime)/1000||0,.04);lastTime=now;
-  update(dt);render();
+  const dt=Math.min((now-last)/1000||0,.04);
+  last=now;
+  if(state==="playing")update(dt);
+  else if(state!=="menu")particles.forEach(p=>p.life-=dt);
+  render(dt);
   requestAnimationFrame(loop);
 }
-renderMissions();
-showMessage("Welcome to Eko Horizons","Welcome to Lagos! Complete missions to earn money and XP, level up, buy a house, explore attractions, and drive around the city. Walk to a building and press E or INTERACT.");
+updateHUD();
 requestAnimationFrame(loop);
-
-// Allow the player to leave their current vehicle using the same interaction button.
-const originalInteract=interact;
-function handleVehicleExit(){
-  if(player.inCar){
-    const car=player.inCar;
-    car.occupied=false;
-    player.x=clamp(car.x+Math.cos(car.angle+Math.PI/2)*35,20,WORLD.w-20);
-    player.y=clamp(car.y+Math.sin(car.angle+Math.PI/2)*35,20,WORLD.h-20);
-    player.inCar=null;
-    showMessage("Vehicle Exited","You are back on foot. Explore more of Lagos or find another car.");
-    return true;
-  }
-  return false;
-}
-document.getElementById("interact").onclick=()=>{
-  if(toastOpen){closeMessage();return;}
-  if(handleVehicleExit())return;
-  originalInteract();
-};
-addEventListener("keydown",e=>{
-  if(e.key.toLowerCase()==="e"&&!e.repeat){
-    if(toastOpen)return;
-    if(handleVehicleExit())e.preventDefault();
-  }
-});
-
 })();
 </script>
 </body>
